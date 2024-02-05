@@ -4,39 +4,22 @@
 #include "retarget.h"
 #include "bsp_usart.h"
 #include "bsp_systick.h"
+#include "bsp_beep.h"
 
 // #define Exp_1 // 实验一 点亮LED
 // #define Exp_2 // 实验二 按键检测
 // #define Exp_3 // 实验三 串口通信
+// #define Exp_4 // 实验四 蜂鸣器
 
 void Delay(__IO u32 nCount);
 
 static void Show_Message(void);
 
 int main(void) {
-    // char ch;
+    /*实验一 点亮LED*/
 #ifdef Exp_1
     LED_GPIO_Config(); // LED端口初始化
-#endif
-
-#ifdef Exp_2
-    LED_GPIO_Config(); // LED端口初始化
-    Key_GPIO_Config(); // 按键初始化
-#endif
-
-#ifdef Exp_3
-    LED_GPIO_Config(); // LED端口初始化
-    USARTx_Config(); // 初始化 USART 配置模式为 115200 8-N-1
-    RetargetInit(USART1); // 串口重定向
-    Show_Message(); // 显示信息
-#endif
-
-
-//    SysTick_Init();
-
-    while (1) {
-        /*实验一 点亮LED*/
-#ifdef Exp_1
+    while(1) {
         LED1(ON);
         Delay(0xFFFFFF);
         LED1(OFF);
@@ -72,22 +55,33 @@ int main(void) {
 
         LED_RGBOFF;
         Delay(0xFFFFFF);
+    }
 #endif
 
-        /*实验二 按键检测*/
+    /*实验二 按键检测*/
 #ifdef Exp_2
+    LED_GPIO_Config(); // LED端口初始化
+    Key_GPIO_Config(); // 按键初始化
+    while(1) {
         if (Key_Scan(KEY1_GPIO_PORT, KEY1_PIN) == KEY_ON) {
             LED1_TOGGLE; // LED1翻转
         }
         if (Key_Scan(KEY2_GPIO_PORT, KEY2_PIN) == KEY_ON) {
             LED2_TOGGLE; // LED2翻转
         }
+    }
 #endif
-        /*实验三 串口通信*/
+
+    /*实验三 串口通信*/
 #ifdef Exp_3
+    LED_GPIO_Config(); // LED端口初始化
+    USARTx_Config(); // 初始化 USART 配置模式为 115200 8-N-1
+    RetargetInit(USART1); // 串口重定向
+    Show_Message(); // 显示信息
+    char ch;
+    while(1) {
         ch = getchar(); // 获取字符指令
         printf("接收到字符：%c\n", ch);
-
         /* 根据字符指令控制RGB彩灯颜色 */
         switch (ch) {
             case '1': LED_RED;
@@ -111,8 +105,21 @@ int main(void) {
                 Show_Message();
                 break;
         }
-#endif
     }
+#endif
+
+    /*实验四 蜂鸣器*/
+#ifdef Exp_4
+    BEEP_GPIO_Config(); // 蜂鸣器端口初始化
+    while(1) {
+        BEEP_ON;
+        Delay(0xFFFFFF);
+        BEEP_OFF;
+        Delay(0xFFFFFF);
+    }
+#endif
+
+
 }
 
 /**
