@@ -8,7 +8,7 @@
   ******************************************************************************
   * @attention
   *
-  * 实验平台:野火  STM32 F429 开发板  
+  * 实验平台:野火  STM32 F429 开发板
   * 论坛    :http://www.firebbs.cn
   * 淘宝    :https://fire-stm32.taobao.com
   *
@@ -28,7 +28,8 @@ void USARTx_Config(void)
     GPIO_InitTypeDef GPIO_InitStructure;
     USART_InitTypeDef USART_InitStructure;
 
-    RCC_AHB1PeriphClockCmd(USARTx_RX_GPIO_CLK|USARTx_TX_GPIO_CLK,ENABLE);
+    RCC_AHB1PeriphClockCmd(USARTx_RX_GPIO_CLK, ENABLE);
+    RCC_AHB1PeriphClockCmd(USARTx_TX_GPIO_CLK, ENABLE);
 
     /* 使能 USART 时钟 */
     USARTx_CLOCKCMD(USARTx_CLK, ENABLE);

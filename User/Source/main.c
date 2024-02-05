@@ -3,20 +3,24 @@
 #include "bsp_key.h"
 #include "retarget.h"
 #include "bsp_usart.h"
+//#include "bsp_debug_usart.h"
 #include "bsp_SysTick.h"
 #include "bsp_beep.h"
 #include "bsp_exti.h"
 
-// #define Exp_1 // 实验一 点亮LED
-// #define Exp_2 // 实验二 按键检测
-// #define Exp_3 // 实验三 串口通信
-// #define Exp_4 // 实验四 蜂鸣器
-//#define Exp_5 // 实验五 外部中断
-#define Exp_6 // 实验六 SysTick定时器
+//#define Exp_1 // 实验一 点亮LED
+//#define Exp_2 // 实验二 按键检测
+//#define Exp_3 // 实验三 串口通信
+//#define Exp_4 // 实验四 串口通信(中断接收模式)
+//#define Exp_5 // 实验五 蜂鸣器
+//#define Exp_6 // 实验六 外部中断
+//#define Exp_7 // 实验七 SysTick定时器
 
 void Delay(__IO u32 nCount);
 
+#ifdef Exp_3
 static void Show_Message(void);
+#endif
 
 int main(void) {
     /*实验一 点亮LED*/
@@ -111,8 +115,17 @@ int main(void) {
     }
 #endif
 
-    /*实验四 蜂鸣器*/
+    /*实验四 串口通信(中断接收模式)*/
 #ifdef Exp_4
+    Debug_USART_Config(); // 初始化 DEBUG_USART 配置模式为 115200 8-N-1
+    RetargetInit(DEBUG_USART); // 串口重定向
+    Usart_SendString(DEBUG_USART, "串口中断接收回显实验\n");
+    printf("串口中断接收回显实验\n");
+    while(1) {}
+#endif
+
+    /*实验五 蜂鸣器*/
+#ifdef Exp_5
     BEEP_GPIO_Config(); // 蜂鸣器端口初始化
     while(1) {
         BEEP_ON;
@@ -122,8 +135,8 @@ int main(void) {
     }
 #endif
 
-    /*实验五 外部中断*/
-#ifdef Exp_5
+    /*实验六 外部中断*/
+#ifdef Exp_6
     LED_GPIO_Config(); // LED端口初始化
     /*
      * 初始化EXTI中断，按下按键会触发中断，触发中断会进入stm32f4xx_it.c文件中的函数
@@ -134,8 +147,8 @@ int main(void) {
     while(1) {}
 #endif
 
-    /*实验六 SysTick定时器*/
-#ifdef Exp_6
+    /*实验七 SysTick定时器*/
+#ifdef Exp_7
     LED_GPIO_Config(); // LED端口初始化
     /*
      * 配置SysTick 为10us中断一次,时间到后触发定时中断，
@@ -161,6 +174,7 @@ void Delay(__IO uint32_t nCount) {
     for (; nCount != 0; nCount--);
 }
 
+#ifdef Exp_3
 /**
   * @brief  Print information
   * @param  none
@@ -180,3 +194,4 @@ static void Show_Message(void) {
     printf("     7    ------    白 \n");
     printf("     8    ------    灭 \n");
 }
+#endif
