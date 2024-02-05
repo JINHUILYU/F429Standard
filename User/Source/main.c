@@ -3,13 +3,16 @@
 #include "bsp_key.h"
 #include "retarget.h"
 #include "bsp_usart.h"
-#include "bsp_systick.h"
+#include "bsp_SysTick.h"
 #include "bsp_beep.h"
+#include "bsp_exti.h"
 
 // #define Exp_1 // 实验一 点亮LED
 // #define Exp_2 // 实验二 按键检测
 // #define Exp_3 // 实验三 串口通信
 // #define Exp_4 // 实验四 蜂鸣器
+//#define Exp_5 // 实验五 外部中断
+#define Exp_6 // 实验六 SysTick定时器
 
 void Delay(__IO u32 nCount);
 
@@ -119,11 +122,39 @@ int main(void) {
     }
 #endif
 
+    /*实验五 外部中断*/
+#ifdef Exp_5
+    LED_GPIO_Config(); // LED端口初始化
+    /*
+     * 初始化EXTI中断，按下按键会触发中断，触发中断会进入stm32f4xx_it.c文件中的函数
+	 * KEY1_IRQHandler和KEY2_IRQHandler，处理中断，反转LED灯。
+	*/
+    EXTI_Key_Config();
+    // 等待中断触发
+    while(1) {}
+#endif
 
+    /*实验六 SysTick定时器*/
+#ifdef Exp_6
+    LED_GPIO_Config(); // LED端口初始化
+    /*
+     * 配置SysTick 为10us中断一次,时间到后触发定时中断，
+     * 进入stm32fxx_it.c文件的SysTick_Handler处理，通过数中断次数计时
+	 */
+    SysTick_Init();
+    while(1) {
+        LED_RED;
+        Delay_us(100000); // 1s 10000 * 10us = 1000ms
+        LED_GREEN;
+        Delay_us(100000); // 1s
+        LED_BLUE;
+        Delay_us(100000); // 1s
+    }
+#endif
 }
 
 /**
- * @brief  延时函数
+ * @brief Delay function
  * @param nCount
  */
 void Delay(__IO uint32_t nCount) {
@@ -131,7 +162,7 @@ void Delay(__IO uint32_t nCount) {
 }
 
 /**
-  * @brief  打印指令输入提示信息
+  * @brief  Print information
   * @param  none
   * @retval none
   */
@@ -139,7 +170,7 @@ static void Show_Message(void) {
     printf("\r\n   这是一个通过串口通信指令控制RGB彩灯实验 \n");
     printf("使用  USART1  参数为：%d 8-N-1 \n", USARTx_BAUDRATE);
     printf("开发板接到指令后控制RGB彩灯颜色，指令对应如下：\n");
-    printf("   指令   ------ 彩灯颜色 \n");
+    printf("   指令    ------ 彩灯颜色 \n");
     printf("     1    ------    红 \n");
     printf("     2    ------    绿 \n");
     printf("     3    ------    蓝 \n");

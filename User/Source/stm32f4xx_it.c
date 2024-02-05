@@ -29,6 +29,10 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
+#include "bsp_led.h"
+#include "bsp_exti.h"
+
+extern void TimingDelay_Decrement(void);
 
 /** @addtogroup STM32F429I_DISCOVERY_Examples
   * @{
@@ -36,7 +40,7 @@
 
 /** @addtogroup FMC_SDRAM
   * @{
-  */ 
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -136,7 +140,9 @@ void PendSV_Handler(void)
   * @retval None
   */
 void SysTick_Handler(void)
-{}
+{
+    TimingDelay_Decrement();
+}
 
 /******************************************************************************/
 /*                 STM32F4xx Peripherals Interrupt Handlers                   */
@@ -147,10 +153,41 @@ void SysTick_Handler(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
-
+  */
+/*
+ * @brief  外部中断0服务函数，对应按键KEY1，当KEY1按下时，LED1翻转(RED)
+ * @param  none
+ * @retval none
+ */
+void KEY1_IRQHandler(void)
+{
+    //确保是否产生了EXTI Line中断
+    if(EXTI_GetITStatus(KEY1_INT_EXTI_LINE) != RESET)
+    {
+        // LED1 取反
+        LED1_TOGGLE;
+        //清除中断标志位
+        EXTI_ClearITPendingBit(KEY1_INT_EXTI_LINE);
+    }
+}
+/*
+ * @brief  外部中断15_10服务函数，对应按键KEY2，当KEY2按下时，LED2翻转(GREEN)
+ * @param  none
+ * @retval none
+ */
+void KEY2_IRQHandler(void)
+{
+    //确保是否产生了EXTI Line中断
+    if(EXTI_GetITStatus(KEY2_INT_EXTI_LINE) != RESET)
+    {
+        // LED2 取反
+        LED2_TOGGLE;
+        //清除中断标志位
+        EXTI_ClearITPendingBit(KEY2_INT_EXTI_LINE);
+    }
+}
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
