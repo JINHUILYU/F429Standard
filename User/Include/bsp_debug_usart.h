@@ -5,11 +5,11 @@
 //#include <stdio.h>
 //
 //
-////“˝Ω≈∂®“Â
+////ÂºïËÑöÂÆö‰πâ
 ///*******************************************************/
 //#define DEBUG_USART                             USART1
 //#define DEBUG_USART_CLK                         RCC_APB2Periph_USART1
-//#define DEBUG_USART_BAUDRATE                    115200  //¥Æø⁄≤®Ãÿ¬ 
+//#define DEBUG_USART_BAUDRATE                    115200  //‰∏≤Âè£Ê≥¢ÁâπÁéá
 //
 //#define DEBUG_USART_RX_GPIO_PORT                GPIOA
 //#define DEBUG_USART_RX_GPIO_CLK                 RCC_AHB1Periph_GPIOA
@@ -33,4 +33,4 @@
 //
 //void Usart_SendHalfWord( USART_TypeDef * pUSARTx, uint16_t ch);
 //
-//#endif /* __USART1_H */
+//#endif /* __DEBUG_USART_H */

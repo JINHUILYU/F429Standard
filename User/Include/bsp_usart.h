@@ -5,17 +5,17 @@
 #include <stdio.h>
 
 
-//���Ŷ���
+//引脚定义
 /*******************************************************/
 #define USARTx                             USART1
 
-/* ��ͬ�Ĵ��ڹ��ص����߲�һ����ʱ��ʹ�ܺ���Ҳ��һ������ֲʱҪע��
- * ����1��6��      RCC_APB2PeriphClockCmd
- * ����2/3/4/5/7�� RCC_APB1PeriphClockCmd
+/* 不同的串口挂载的总线不一样，时钟使能函数也不一样，移植时要注意
+ * 串口1和6是      RCC_APB2PeriphClockCmd
+ * 串口2/3/4/5/7是 RCC_APB1PeriphClockCmd
  */
 #define USARTx_CLK                         RCC_APB2Periph_USART1
 #define USARTx_CLOCKCMD                    RCC_APB2PeriphClockCmd
-#define USARTx_BAUDRATE                    115200  // ���ڲ�����
+#define USARTx_BAUDRATE                    115200  // 串口波特率
 
 #define USARTx_RX_GPIO_PORT                GPIOA
 #define USARTx_RX_GPIO_CLK                 RCC_AHB1Periph_GPIOA

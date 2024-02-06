@@ -3,7 +3,7 @@
 
 #include "stm32f4xx.h"
 
-//Òı½Å¶¨Òå
+//å¼•è„šå®šä¹‰
 /*******************************************************/
 #define KEY1_PIN                  GPIO_Pin_0
 #define KEY1_GPIO_PORT            GPIOA
@@ -14,9 +14,9 @@
 #define KEY2_GPIO_CLK             RCC_AHB1Periph_GPIOC
 /*******************************************************/
 
-/** °´¼ü°´ÏÂ±êÖÃºê
-   * °´¼ü°´ÏÂÎª¸ßµçÆ½£¬ÉèÖÃ KEY_ON=1£¬ KEY_OFF=0
-   * Èô°´¼ü°´ÏÂÎªµÍµçÆ½£¬°ÑºêÉèÖÃ³ÉKEY_ON=0 £¬KEY_OFF=1 ¼´¿É
+/** æŒ‰é”®æŒ‰ä¸‹æ ‡ç½®å®
+   * æŒ‰é”®æŒ‰ä¸‹ä¸ºé«˜ç”µå¹³ï¼Œè®¾ç½® KEY_ON=1ï¼Œ KEY_OFF=0
+   * è‹¥æŒ‰é”®æŒ‰ä¸‹ä¸ºä½ç”µå¹³ï¼ŒæŠŠå®è®¾ç½®æˆKEY_ON=0 ï¼ŒKEY_OFF=1 å³å¯
    */
 #define KEY_ON    1
 #define KEY_OFF   0
@@ -25,5 +25,5 @@ void Key_GPIO_Config(void);
 
 uint8_t Key_Scan(GPIO_TypeDef *GPIOx, u16 GPIO_Pin);
 
-#endif /* __LED_H */
+#endif /* __KEY_H */
 

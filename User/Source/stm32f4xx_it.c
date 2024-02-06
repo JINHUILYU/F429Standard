@@ -159,34 +159,34 @@ void SysTick_Handler(void)
   * @}
   */
 /*
- * @brief  Íâ²¿ÖĞ¶Ï0·şÎñº¯Êı£¬¶ÔÓ¦°´¼üKEY1£¬µ±KEY1°´ÏÂÊ±£¬LED1·­×ª(RED)
+ * @brief  å¤–éƒ¨ä¸­æ–­0æœåŠ¡å‡½æ•°ï¼Œå¯¹åº”æŒ‰é”®KEY1ï¼Œå½“KEY1æŒ‰ä¸‹æ—¶ï¼ŒLED1ç¿»è½¬(RED)
  * @param  none
  * @retval none
  */
 void KEY1_IRQHandler(void)
 {
-    //È·±£ÊÇ·ñ²úÉúÁËEXTI LineÖĞ¶Ï
+    //ç¡®ä¿æ˜¯å¦äº§ç”Ÿäº†EXTI Lineä¸­æ–­
     if(EXTI_GetITStatus(KEY1_INT_EXTI_LINE) != RESET)
     {
-        // LED1 È¡·´
+        // LED1 å–å
         LED1_TOGGLE;
-        //Çå³ıÖĞ¶Ï±êÖ¾Î»
+        //æ¸…é™¤ä¸­æ–­æ ‡å¿—ä½
         EXTI_ClearITPendingBit(KEY1_INT_EXTI_LINE);
     }
 }
 /*
- * @brief  Íâ²¿ÖĞ¶Ï15_10·şÎñº¯Êı£¬¶ÔÓ¦°´¼üKEY2£¬µ±KEY2°´ÏÂÊ±£¬LED2·­×ª(GREEN)
+ * @brief  å¤–éƒ¨ä¸­æ–­15_10æœåŠ¡å‡½æ•°ï¼Œå¯¹åº”æŒ‰é”®KEY2ï¼Œå½“KEY2æŒ‰ä¸‹æ—¶ï¼ŒLED2ç¿»è½¬(GREEN)
  * @param  none
  * @retval none
  */
 void KEY2_IRQHandler(void)
 {
-    //È·±£ÊÇ·ñ²úÉúÁËEXTI LineÖĞ¶Ï
+    //ç¡®ä¿æ˜¯å¦äº§ç”Ÿäº†EXTI Lineä¸­æ–­
     if(EXTI_GetITStatus(KEY2_INT_EXTI_LINE) != RESET)
     {
-        // LED2 È¡·´
+        // LED2 å–å
         LED2_TOGGLE;
-        //Çå³ıÖĞ¶Ï±êÖ¾Î»
+        //æ¸…é™¤ä¸­æ–­æ ‡å¿—ä½
         EXTI_ClearITPendingBit(KEY2_INT_EXTI_LINE);
     }
 }

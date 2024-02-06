@@ -3,18 +3,18 @@
 #include "bsp_key.h"
 #include "retarget.h"
 #include "bsp_usart.h"
-//#include "bsp_debug_usart.h"
+#include "bsp_debug_usart.h"
 #include "bsp_SysTick.h"
 #include "bsp_beep.h"
 #include "bsp_exti.h"
 
-//#define Exp_1 // ÊµÑéÒ» µãÁÁLED
-//#define Exp_2 // ÊµÑé¶ş °´¼ü¼ì²â
-//#define Exp_3 // ÊµÑéÈı ´®¿ÚÍ¨ĞÅ
-//#define Exp_4 // ÊµÑéËÄ ´®¿ÚÍ¨ĞÅ(ÖĞ¶Ï½ÓÊÕÄ£Ê½)
-//#define Exp_5 // ÊµÑéÎå ·äÃùÆ÷
-//#define Exp_6 // ÊµÑéÁù Íâ²¿ÖĞ¶Ï
-//#define Exp_7 // ÊµÑéÆß SysTick¶¨Ê±Æ÷
+//#define Exp_1 // å®éªŒä¸€ ç‚¹äº®LED
+//#define Exp_2 // å®éªŒäºŒ æŒ‰é”®æ£€æµ‹
+//#define Exp_3 // å®éªŒä¸‰ ä¸²å£é€šä¿¡
+//#define Exp_4 // å®éªŒå›› ä¸²å£é€šä¿¡(ä¸­æ–­æ¥æ”¶æ¨¡å¼)
+//#define Exp_5 // å®éªŒäº” èœ‚é¸£å™¨
+//#define Exp_6 // å®éªŒå…­ å¤–éƒ¨ä¸­æ–­
+//#define Exp_7 // å®éªŒä¸ƒ SysTickå®šæ—¶å™¨
 
 void Delay(__IO u32 nCount);
 
@@ -23,9 +23,9 @@ static void Show_Message(void);
 #endif
 
 int main(void) {
-    /*ÊµÑéÒ» µãÁÁLED*/
+    /*å®éªŒä¸€ ç‚¹äº®LED*/
 #ifdef Exp_1
-    LED_GPIO_Config(); // LED¶Ë¿Ú³õÊ¼»¯
+    LED_GPIO_Config(); // LEDç«¯å£åˆå§‹åŒ–
     while(1) {
         LED1(ON);
         Delay(0xFFFFFF);
@@ -38,7 +38,7 @@ int main(void) {
         LED3(ON);
         Delay(0xFFFFFF);
         LED3(OFF);
-        /* ÂÖÁ÷ÏÔÊ¾ºìÂÌÀ¶»Æ×ÏÇà°× */
+        /* è½®æµæ˜¾ç¤ºçº¢ç»¿è“é»„ç´«é’ç™½ */
         LED_RED;
         Delay(0xFFFFFF);
 
@@ -65,31 +65,31 @@ int main(void) {
     }
 #endif
 
-    /*ÊµÑé¶ş °´¼ü¼ì²â*/
+    /*å®éªŒäºŒ æŒ‰é”®æ£€æµ‹*/
 #ifdef Exp_2
-    LED_GPIO_Config(); // LED¶Ë¿Ú³õÊ¼»¯
-    Key_GPIO_Config(); // °´¼ü³õÊ¼»¯
+    LED_GPIO_Config(); // LEDç«¯å£åˆå§‹åŒ–
+    Key_GPIO_Config(); // æŒ‰é”®åˆå§‹åŒ–
     while(1) {
         if (Key_Scan(KEY1_GPIO_PORT, KEY1_PIN) == KEY_ON) {
-            LED1_TOGGLE; // LED1·­×ª
+            LED1_TOGGLE; // LED1ç¿»è½¬
         }
         if (Key_Scan(KEY2_GPIO_PORT, KEY2_PIN) == KEY_ON) {
-            LED2_TOGGLE; // LED2·­×ª
+            LED2_TOGGLE; // LED2ç¿»è½¬
         }
     }
 #endif
 
-    /*ÊµÑéÈı ´®¿ÚÍ¨ĞÅ*/
+    /*å®éªŒä¸‰ ä¸²å£é€šä¿¡*/
 #ifdef Exp_3
-    LED_GPIO_Config(); // LED¶Ë¿Ú³õÊ¼»¯
-    USARTx_Config(); // ³õÊ¼»¯ USART ÅäÖÃÄ£Ê½Îª 115200 8-N-1
-    RetargetInit(USART1); // ´®¿ÚÖØ¶¨Ïò
-    Show_Message(); // ÏÔÊ¾ĞÅÏ¢
+    LED_GPIO_Config(); // LEDç«¯å£åˆå§‹åŒ–
+    USARTx_Config(); // åˆå§‹åŒ– USART é…ç½®æ¨¡å¼ä¸º 115200 8-N-1
+    RetargetInit(USART1); // ä¸²å£é‡å®šå‘
+    Show_Message(); // æ˜¾ç¤ºä¿¡æ¯
     char ch;
     while(1) {
-        ch = getchar(); // »ñÈ¡×Ö·ûÖ¸Áî
-        printf("½ÓÊÕµ½×Ö·û£º%c\n", ch);
-        /* ¸ù¾İ×Ö·ûÖ¸Áî¿ØÖÆRGB²ÊµÆÑÕÉ« */
+        ch = getchar(); // è·å–å­—ç¬¦æŒ‡ä»¤
+        printf("æ¥æ”¶åˆ°å­—ç¬¦ï¼š%c\n", ch);
+        /* æ ¹æ®å­—ç¬¦æŒ‡ä»¤æ§åˆ¶RGBå½©ç¯é¢œè‰² */
         switch (ch) {
             case '1': LED_RED;
                 break;
@@ -108,25 +108,25 @@ int main(void) {
             case '8': LED_RGBOFF;
                 break;
             default:
-                /* Èç¹û²»ÊÇÖ¸¶¨Ö¸Áî×Ö·û£¬´òÓ¡ÌáÊ¾ĞÅÏ¢ */
+                /* å¦‚æœä¸æ˜¯æŒ‡å®šæŒ‡ä»¤å­—ç¬¦ï¼Œæ‰“å°æç¤ºä¿¡æ¯ */
                 Show_Message();
                 break;
         }
     }
 #endif
 
-    /*ÊµÑéËÄ ´®¿ÚÍ¨ĞÅ(ÖĞ¶Ï½ÓÊÕÄ£Ê½)*/
+    /*å®éªŒå›› ä¸²å£é€šä¿¡(ä¸­æ–­æ¥æ”¶æ¨¡å¼)*/
 #ifdef Exp_4
-    Debug_USART_Config(); // ³õÊ¼»¯ DEBUG_USART ÅäÖÃÄ£Ê½Îª 115200 8-N-1
-    RetargetInit(DEBUG_USART); // ´®¿ÚÖØ¶¨Ïò
-    Usart_SendString(DEBUG_USART, "´®¿ÚÖĞ¶Ï½ÓÊÕ»ØÏÔÊµÑé\n");
-    printf("´®¿ÚÖĞ¶Ï½ÓÊÕ»ØÏÔÊµÑé\n");
+    Debug_USART_Config(); // åˆå§‹åŒ– DEBUG_USART é…ç½®æ¨¡å¼ä¸º 115200 8-N-1
+    RetargetInit(DEBUG_USART); // ä¸²å£é‡å®šå‘
+    Usart_SendString(DEBUG_USART, "ä¸²å£ä¸­æ–­æ¥æ”¶å›æ˜¾å®éªŒ\n");
+    printf("ä¸²å£ä¸­æ–­æ¥æ”¶å›æ˜¾å®éªŒ\n");
     while(1) {}
 #endif
 
-    /*ÊµÑéÎå ·äÃùÆ÷*/
+    /*å®éªŒäº” èœ‚é¸£å™¨*/
 #ifdef Exp_5
-    BEEP_GPIO_Config(); // ·äÃùÆ÷¶Ë¿Ú³õÊ¼»¯
+    BEEP_GPIO_Config(); // èœ‚é¸£å™¨ç«¯å£åˆå§‹åŒ–
     while(1) {
         BEEP_ON;
         Delay(0xFFFFFF);
@@ -135,33 +135,33 @@ int main(void) {
     }
 #endif
 
-    /*ÊµÑéÁù Íâ²¿ÖĞ¶Ï*/
+    /*å®éªŒå…­ å¤–éƒ¨ä¸­æ–­*/
 #ifdef Exp_6
-    LED_GPIO_Config(); // LED¶Ë¿Ú³õÊ¼»¯
+    LED_GPIO_Config(); // LEDç«¯å£åˆå§‹åŒ–
     /*
-     * ³õÊ¼»¯EXTIÖĞ¶Ï£¬°´ÏÂ°´¼ü»á´¥·¢ÖĞ¶Ï£¬´¥·¢ÖĞ¶Ï»á½øÈëstm32f4xx_it.cÎÄ¼şÖĞµÄº¯Êı
-	 * KEY1_IRQHandlerºÍKEY2_IRQHandler£¬´¦ÀíÖĞ¶Ï£¬·´×ªLEDµÆ¡£
+     * åˆå§‹åŒ–EXTIä¸­æ–­ï¼ŒæŒ‰ä¸‹æŒ‰é”®ä¼šè§¦å‘ä¸­æ–­ï¼Œè§¦å‘ä¸­æ–­ä¼šè¿›å…¥stm32f4xx_it.cæ–‡ä»¶ä¸­çš„å‡½æ•°
+	 * KEY1_IRQHandlerå’ŒKEY2_IRQHandlerï¼Œå¤„ç†ä¸­æ–­ï¼Œåè½¬LEDç¯ã€‚
 	*/
     EXTI_Key_Config();
-    // µÈ´ıÖĞ¶Ï´¥·¢
+    // ç­‰å¾…ä¸­æ–­è§¦å‘
     while(1) {}
 #endif
 
-    /*ÊµÑéÆß SysTick¶¨Ê±Æ÷*/
+    /*å®éªŒä¸ƒ SysTickå®šæ—¶å™¨*/
 #ifdef Exp_7
-    LED_GPIO_Config(); // LED¶Ë¿Ú³õÊ¼»¯
+    LED_GPIO_Config(); // LEDç«¯å£åˆå§‹åŒ–
     /*
-     * ÅäÖÃSysTick Îª10usÖĞ¶ÏÒ»´Î,Ê±¼äµ½ºó´¥·¢¶¨Ê±ÖĞ¶Ï£¬
-     * ½øÈëstm32fxx_it.cÎÄ¼şµÄSysTick_Handler´¦Àí£¬Í¨¹ıÊıÖĞ¶Ï´ÎÊı¼ÆÊ±
+     * é…ç½®SysTick ä¸º10usä¸­æ–­ä¸€æ¬¡,æ—¶é—´åˆ°åè§¦å‘å®šæ—¶ä¸­æ–­ï¼Œ
+     * è¿›å…¥stm32fxx_it.cæ–‡ä»¶çš„SysTick_Handlerå¤„ç†ï¼Œé€šè¿‡æ•°ä¸­æ–­æ¬¡æ•°è®¡æ—¶
 	 */
     SysTick_Init();
     while(1) {
         LED_RED;
         Delay_us(100000); // 1s 10000 * 10us = 1000ms
         LED_GREEN;
-        Delay_us(100000); // 1s
+        Delay_ms(1000); // 1s
         LED_BLUE;
-        Delay_us(100000); // 1s
+        Delay_ms(1000); // 1s
     }
 #endif
 }
@@ -181,17 +181,17 @@ void Delay(__IO uint32_t nCount) {
   * @retval none
   */
 static void Show_Message(void) {
-    printf("\r\n   ÕâÊÇÒ»¸öÍ¨¹ı´®¿ÚÍ¨ĞÅÖ¸Áî¿ØÖÆRGB²ÊµÆÊµÑé \n");
-    printf("Ê¹ÓÃ  USART1  ²ÎÊıÎª£º%d 8-N-1 \n", USARTx_BAUDRATE);
-    printf("¿ª·¢°å½Óµ½Ö¸Áîºó¿ØÖÆRGB²ÊµÆÑÕÉ«£¬Ö¸Áî¶ÔÓ¦ÈçÏÂ£º\n");
-    printf("   Ö¸Áî    ------ ²ÊµÆÑÕÉ« \n");
-    printf("     1    ------    ºì \n");
-    printf("     2    ------    ÂÌ \n");
-    printf("     3    ------    À¶ \n");
-    printf("     4    ------    »Æ \n");
-    printf("     5    ------    ×Ï \n");
-    printf("     6    ------    Çà \n");
-    printf("     7    ------    °× \n");
-    printf("     8    ------    Ãğ \n");
+    printf("\r\n   è¿™æ˜¯ä¸€ä¸ªé€šè¿‡ä¸²å£é€šä¿¡æŒ‡ä»¤æ§åˆ¶RGBå½©ç¯å®éªŒ \n");
+    printf("ä½¿ç”¨  USART1  å‚æ•°ä¸ºï¼š%d 8-N-1 \n", USARTx_BAUDRATE);
+    printf("å¼€å‘æ¿æ¥åˆ°æŒ‡ä»¤åæ§åˆ¶RGBå½©ç¯é¢œè‰²ï¼ŒæŒ‡ä»¤å¯¹åº”å¦‚ä¸‹ï¼š\n");
+    printf("   æŒ‡ä»¤    ------ å½©ç¯é¢œè‰² \n");
+    printf("     1    ------    çº¢ \n");
+    printf("     2    ------    ç»¿ \n");
+    printf("     3    ------    è“ \n");
+    printf("     4    ------    é»„ \n");
+    printf("     5    ------    ç´« \n");
+    printf("     6    ------    é’ \n");
+    printf("     7    ------    ç™½ \n");
+    printf("     8    ------    ç­ \n");
 }
 #endif

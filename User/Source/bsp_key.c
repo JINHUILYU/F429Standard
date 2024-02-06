@@ -4,67 +4,67 @@
   * @author  fire
   * @version V1.0
   * @date    2015-xx-xx
-  * @brief   °´¼üÓ¦ÓÃbsp£¨É¨ÃèÄ£Ê½£©
+  * @brief   æŒ‰é”®åº”ç”¨bspï¼ˆæ‰«ææ¨¡å¼ï¼‰
   ******************************************************************************
   * @attention
   *
-  * ÊµÑéÆ½Ì¨:Ò°»ğ  STM32 F429 ¿ª·¢°å 
-  * ÂÛÌ³    :http://www.firebbs.cn
-  * ÌÔ±¦    :https://fire-stm32.taobao.com
+  * å®éªŒå¹³å°:é‡ç«  STM32 F429 å¼€å‘æ¿ 
+  * è®ºå›    :http://www.firebbs.cn
+  * æ·˜å®    :https://fire-stm32.taobao.com
   *
   ******************************************************************************
   */
 
 #include "bsp_key.h"
 
-/// ²»¾«È·µÄÑÓÊ±
+// ä¸ç²¾ç¡®çš„å»¶æ—¶
 void Key_Delay(__IO u32 nCount) {
     for (; nCount != 0; nCount--);
 }
 
 /**
-  * @brief  ÅäÖÃ°´¼üÓÃµ½µÄI/O¿Ú
-  * @param  ÎŞ
-  * @retval ÎŞ
+  * @brief  é…ç½®æŒ‰é”®ç”¨åˆ°çš„I/Oå£
+  * @param  none
+  * @retval none
   */
 void Key_GPIO_Config(void) {
     GPIO_InitTypeDef GPIO_InitStructure;
 
-    /*¿ªÆô°´¼üGPIO¿ÚµÄÊ±ÖÓ*/
+    /*å¼€å¯æŒ‰é”®GPIOå£çš„æ—¶é’Ÿ*/
     RCC_AHB1PeriphClockCmd(KEY1_GPIO_CLK, ENABLE);
     RCC_AHB1PeriphClockCmd(KEY2_GPIO_CLK, ENABLE);
 
-    /*Ñ¡Ôñ°´¼üµÄÒı½Å*/
+    /*é€‰æ‹©æŒ‰é”®çš„å¼•è„š*/
     GPIO_InitStructure.GPIO_Pin = KEY1_PIN;
 
-    /*ÉèÖÃÒı½ÅÎªÊäÈëÄ£Ê½*/
+    /*è®¾ç½®å¼•è„šä¸ºè¾“å…¥æ¨¡å¼*/
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
 
-    /*ÉèÖÃÒı½Å²»ÉÏÀ­Ò²²»ÏÂÀ­*/
+    /*è®¾ç½®å¼•è„šä¸ä¸Šæ‹‰ä¹Ÿä¸ä¸‹æ‹‰*/
     GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 
-    /*Ê¹ÓÃÉÏÃæµÄ½á¹¹Ìå³õÊ¼»¯°´¼ü*/
+    /*ä½¿ç”¨ä¸Šé¢çš„ç»“æ„ä½“åˆå§‹åŒ–æŒ‰é”®*/
     GPIO_Init(KEY1_GPIO_PORT, &GPIO_InitStructure);
 
-    /*Ñ¡Ôñ°´¼üµÄÒı½Å*/
+    /*é€‰æ‹©æŒ‰é”®çš„å¼•è„š*/
     GPIO_InitStructure.GPIO_Pin = KEY2_PIN;
 
-    /*Ê¹ÓÃÉÏÃæµÄ½á¹¹Ìå³õÊ¼»¯°´¼ü*/
+    /*ä½¿ç”¨ä¸Šé¢çš„ç»“æ„ä½“åˆå§‹åŒ–æŒ‰é”®*/
     GPIO_Init(KEY2_GPIO_PORT, &GPIO_InitStructure);
 }
 
 /**
-  * @brief   ¼ì²âÊÇ·ñÓĞ°´¼ü°´ÏÂ     
-  *	@param 	GPIOx:¾ßÌåµÄ¶Ë¿Ú, x¿ÉÒÔÊÇ£¨A...K£© 
-	*	@param 	GPIO_PIN:¾ßÌåµÄ¶Ë¿ÚÎ»£¬ ¿ÉÒÔÊÇGPIO_PIN_x£¨x¿ÉÒÔÊÇ0...15£©
-  * @retval  °´¼üµÄ×´Ì¬
-  *		@arg KEY_ON:°´¼ü°´ÏÂ
-  *		@arg KEY_OFF:°´¼üÃ»°´ÏÂ
+  * @brief   æ£€æµ‹æ˜¯å¦æœ‰æŒ‰é”®æŒ‰ä¸‹     
+  *	@param 	GPIOx:å…·ä½“çš„ç«¯å£, xå¯ä»¥æ˜¯ï¼ˆA...Kï¼‰ 
+  *	@param 	GPIO_PIN:å…·ä½“çš„ç«¯å£ä½ï¼Œ å¯ä»¥æ˜¯GPIO_PIN_xï¼ˆxå¯ä»¥æ˜¯0...15ï¼‰
+  * @retval  æŒ‰é”®çš„çŠ¶æ€
+  *		@arg KEY_ON:æŒ‰é”®æŒ‰ä¸‹
+  *		@arg KEY_OFF:æŒ‰é”®æ²¡æŒ‰ä¸‹
   */
 uint8_t Key_Scan(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin) {
-    /*¼ì²âÊÇ·ñÓĞ°´¼ü°´ÏÂ */
+    /*æ£€æµ‹æ˜¯å¦æœ‰æŒ‰é”®æŒ‰ä¸‹ */
     if (GPIO_ReadInputDataBit(GPIOx, GPIO_Pin) == KEY_ON) {
-        /*µÈ´ı°´¼üÊÍ·Å */
+        /*ç­‰å¾…æŒ‰é”®é‡Šæ”¾ */
         while (GPIO_ReadInputDataBit(GPIOx, GPIO_Pin) == KEY_ON);
         return KEY_ON;
     } else
