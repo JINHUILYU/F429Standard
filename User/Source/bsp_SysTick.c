@@ -4,14 +4,14 @@
   * @author  fire
   * @version V1.0
   * @date    2015-xx-xx
-  * @brief   SysTick ÏµÍ³µÎ´ğÊ±ÖÓ10usÖĞ¶Ïº¯Êı¿â,ÖĞ¶ÏÊ±¼ä¿É×ÔÓÉÅäÖÃ£¬
-  *          ³£ÓÃµÄÓĞ 1us 10us 1ms ÖĞ¶Ï¡£     
+  * @brief   SysTick ç³»ç»Ÿæ»´ç­”æ—¶é’Ÿ10usä¸­æ–­å‡½æ•°åº“,ä¸­æ–­æ—¶é—´å¯è‡ªç”±é…ç½®ï¼Œ
+  *          å¸¸ç”¨çš„æœ‰ 1us 10us 1ms ä¸­æ–­ã€‚     
   ******************************************************************************
   * @attention
   *
-  * ÊµÑéÆ½Ì¨:Ò°»ğ  STM32 F429 ¿ª·¢°å
-  * ÂÛÌ³    :http://www.firebbs.cn
-  * ÌÔ±¦    :https://fire-stm32.taobao.com
+  * å®éªŒå¹³å°:é‡ç«  STM32 F429 å¼€å‘æ¿
+  * è®ºå›    :http://www.firebbs.cn
+  * æ·˜å®    :https://fire-stm32.taobao.com
   *
   ******************************************************************************
   */
@@ -21,15 +21,15 @@
 static __IO u32 TimingDelay;
  
 /**
-  * @brief  Æô¶¯ÏµÍ³µÎ´ğ¶¨Ê±Æ÷ SysTick
+  * @brief  å¯åŠ¨ç³»ç»Ÿæ»´ç­”å®šæ—¶å™¨ SysTick
   * @param  none
   * @retval none
   */
 void SysTick_Init(void)
 {
-	/* SystemFrequency / 1000    1msÖĞ¶ÏÒ»´Î
-	 * SystemFrequency / 100000	 10usÖĞ¶ÏÒ»´Î
-	 * SystemFrequency / 1000000 1usÖĞ¶ÏÒ»´Î
+	/* SystemFrequency / 1000    1msä¸­æ–­ä¸€æ¬¡
+	 * SystemFrequency / 100000	 10usä¸­æ–­ä¸€æ¬¡
+	 * SystemFrequency / 1000000 1usä¸­æ–­ä¸€æ¬¡
 	 */
 	if (SysTick_Config(SystemCoreClock / 100000))
 	{ 
@@ -39,10 +39,10 @@ void SysTick_Init(void)
 }
 
 /**
-  * @brief   usÑÓÊ±³ÌĞò,10usÎªÒ»¸öµ¥Î»
+  * @brief   uså»¶æ—¶ç¨‹åº,10usä¸ºä¸€ä¸ªå•ä½
   * @param  
-  *		@arg nTime: Delay_us( 1 ) ÔòÊµÏÖµÄÑÓÊ±Îª 1 * 10us = 10us
-  * @retval  ÎŞ
+  *		@arg nTime: Delay_us( 1 ) åˆ™å®ç°çš„å»¶æ—¶ä¸º 1 * 10us = 10us
+  * @retval  æ— 
   */
 void Delay_us(__IO u32 nTime)
 { 
@@ -52,10 +52,10 @@ void Delay_us(__IO u32 nTime)
 }
 
 /**
-  * @brief  »ñÈ¡½ÚÅÄ³ÌĞò
+  * @brief  è·å–èŠ‚æ‹ç¨‹åº
   * @param  none
   * @retval none
-  * @attention  ÔÚ SysTick ÖĞ¶Ïº¯Êı SysTick_Handler()µ÷ÓÃ
+  * @attention  åœ¨ SysTick ä¸­æ–­å‡½æ•° SysTick_Handler()è°ƒç”¨
   */
 void TimingDelay_Decrement(void)
 {

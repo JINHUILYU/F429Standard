@@ -23,8 +23,8 @@
 #endif /* __GNUC__ */
 
 /**
- * @brief ×¢²áÖØ¶¨Ïò´®¿Ú
- * @param usartx ĞèÒªÖØ¶¨ÏòÊäÈëÊä³öµÄ´®¿Ú
+ * @brief æ³¨å†Œé‡å®šå‘ä¸²å£
+ * @param usartx éœ€è¦é‡å®šå‘è¾“å…¥è¾“å‡ºçš„ä¸²å£
  */
 void RetargetInit(USART_TypeDef *huart);
 

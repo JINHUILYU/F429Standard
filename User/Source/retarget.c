@@ -1,14 +1,14 @@
 #include "retarget.h"
 
-/* ¶¨ÒåUSART¶Ë¿Ú£¬ÓÃÓÚ×¢²áÖØ¶¨ÏòµÄ´®¿Ú(Ò²¿ÉÒÔÓÃUART£¬¸ù¾İÊµ¼ÊÇé¿öÀ´¸ÄĞ´) */
+/* å®šä¹‰USARTç«¯å£ï¼Œç”¨äºæ³¨å†Œé‡å®šå‘çš„ä¸²å£(ä¹Ÿå¯ä»¥ç”¨UARTï¼Œæ ¹æ®å®é™…æƒ…å†µæ¥æ”¹å†™) */
 static USART_TypeDef *sg_retargetUsart;
 
 /**
- * @brief ×¢²áÖØ¶¨Ïò´®¿Ú
- * @param usartx ĞèÒªÖØ¶¨ÏòÊäÈëÊä³öµÄ´®¿Ú
+ * @brief æ³¨å†Œé‡å®šå‘ä¸²å£
+ * @param usartx éœ€è¦é‡å®šå‘è¾“å…¥è¾“å‡ºçš„ä¸²å£
  */
 void RetargetInit(USART_TypeDef *usartx) {
-    /* ×¢²á´®¿Ú */
+    /* æ³¨å†Œä¸²å£ */
     sg_retargetUsart = usartx;
 
     /* Disable I/O buffering for STDOUT stream, so that
@@ -26,13 +26,13 @@ void RetargetInit(USART_TypeDef *usartx) {
   * @retval None
   */
 PUTCHAR_PROTOTYPE {
-/* ·¢ËÍÒ»¸ö×Ö½ÚÊı¾İµ½´®¿Ú */
-/* ºÜ¼òµ¥£¬Ö±½Óµ÷ÓÃ¿âº¯ÊıÖĞµÄ ´®¿Ú·¢ËÍÊı¾İº¯Êı */
+/* å‘é€ä¸€ä¸ªå­—èŠ‚æ•°æ®åˆ°ä¸²å£ */
+/* å¾ˆç®€å•ï¼Œç›´æ¥è°ƒç”¨åº“å‡½æ•°ä¸­çš„ ä¸²å£å‘é€æ•°æ®å‡½æ•° */
     USART_SendData(sg_retargetUsart, (uint8_t) ch);
 
-/*µÈ´ı·¢ËÍÍê±Ï*/
+/*ç­‰å¾…å‘é€å®Œæ¯•*/
     while (USART_GetFlagStatus(sg_retargetUsart, USART_FLAG_TXE) == RESET);
-/* ·µ»Ø·¢ËÍµÄ×Ö·û */
+/* è¿”å›å‘é€çš„å­—ç¬¦ */
     return ch;
 
 }
@@ -44,10 +44,10 @@ PUTCHAR_PROTOTYPE {
   */
 GETCHAR_PROTOTYPE {
 
-/* ºÜ¼òµ¥£¬Ö±½Óµ÷ÓÃ¿âº¯ÊıÖĞµÄ½ÓÊÕ */
-/* µÈ´ı´®¿ÚÊäÈëÊı¾İ */
+/* å¾ˆç®€å•ï¼Œç›´æ¥è°ƒç”¨åº“å‡½æ•°ä¸­çš„æ¥æ”¶ */
+/* ç­‰å¾…ä¸²å£è¾“å…¥æ•°æ® */
     while (USART_GetFlagStatus(sg_retargetUsart, USART_FLAG_RXNE) == RESET);
-/* Ö±½Ó·µ»Ø½ÓÊÕµ½µÄ×Ö·û */
+/* ç›´æ¥è¿”å›æ¥æ”¶åˆ°çš„å­—ç¬¦ */
     return (int) USART_ReceiveData(sg_retargetUsart);
 
 }
