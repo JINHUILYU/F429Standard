@@ -7,6 +7,7 @@
 #include "bsp_SysTick.h"
 #include "bsp_beep.h"
 #include "bsp_exti.h"
+#include "bsp_breath_led.h"
 
 //#define Exp_1 // 实验一 点亮LED
 //#define Exp_2 // 实验二 按键检测
@@ -15,11 +16,21 @@
 //#define Exp_5 // 实验五 蜂鸣器
 //#define Exp_6 // 实验六 外部中断
 //#define Exp_7 // 实验七 SysTick定时器
+#define Exp_8 // 实验八 PWM呼吸灯
 
 void Delay(__IO u32 nCount);
 
 #ifdef Exp_3
 static void Show_Message(void);
+#endif
+
+#ifdef Exp_8
+//该变量在定时器中断服务函数中使用，用于控制各通道的输出
+//修改该变量的值可直接改变呼吸灯的颜色
+//变量格式：RGB888
+__IO uint32_t rgb_color = 0xFF00FF;
+
+#define SOFT_DELAY() Delay(0x3FFFFFF);
 #endif
 
 int main(void) {
@@ -140,8 +151,8 @@ int main(void) {
     LED_GPIO_Config(); // LED端口初始化
     /*
      * 初始化EXTI中断，按下按键会触发中断，触发中断会进入stm32f4xx_it.c文件中的函数
-	 * KEY1_IRQHandler和KEY2_IRQHandler，处理中断，反转LED灯。
-	*/
+     * KEY1_IRQHandler和KEY2_IRQHandler，处理中断，反转LED灯。
+    */
     EXTI_Key_Config();
     // 等待中断触发
     while(1) {}
@@ -153,7 +164,7 @@ int main(void) {
     /*
      * 配置SysTick 为10us中断一次,时间到后触发定时中断，
      * 进入stm32fxx_it.c文件的SysTick_Handler处理，通过数中断次数计时
-	 */
+     */
     SysTick_Init();
     while(1) {
         LED_RED;
@@ -162,6 +173,27 @@ int main(void) {
         Delay_ms(1000); // 1s
         LED_BLUE;
         Delay_ms(1000); // 1s
+    }
+#endif
+
+    /*实验八 PWM呼吸灯*/
+#ifdef Exp_8
+    /* 初始化呼吸灯 */
+    BreathLED_Config();
+
+    while (1) {
+        // 可动态修改颜色，使用各种颜色的呼吸灯
+        rgb_color = 0xFF00FF;
+        SOFT_DELAY();
+
+        rgb_color = 0x8080ff;
+        SOFT_DELAY();
+
+        rgb_color = 0xff8000;
+        SOFT_DELAY();
+
+        rgb_color = 0xffc90e;
+        SOFT_DELAY();
     }
 #endif
 }
