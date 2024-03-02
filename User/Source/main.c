@@ -1,15 +1,3 @@
-#include "stm32f4xx.h"
-#include "bsp_led.h"
-#include "bsp_key.h"
-#include "retarget.h"
-#include "bsp_usart.h"
-#include "bsp_debug_usart.h"
-#include "bsp_SysTick.h"
-#include "bsp_beep.h"
-#include "bsp_exti.h"
-#include "bsp_breath_led.h"
-#include "bsp_basic_tim.h"
-
 //#define Exp_1 // 实验一 点亮LED
 //#define Exp_2 // 实验二 按键检测
 //#define Exp_3 // 实验三 串口通信
@@ -17,23 +5,73 @@
 //#define Exp_5 // 实验五 蜂鸣器
 //#define Exp_6 // 实验六 外部中断
 //#define Exp_7 // 实验七 SysTick定时器
-//#define Exp_8 // 实验八 PWM呼吸灯
-#define Exp_9 // 实验九 基本定时器
+#define Exp_8 // 实验八 PWM呼吸灯
+//#define Exp_9 // 实验九 基本定时器
+//#define Exp_10 // 实验十 高级定时器
 
-void Delay(__IO u32 nCount);
+#ifdef Exp_1
+#include "bsp_led.h"
+#endif
+
+#ifdef Exp_2
+#include "bsp_led.h"
+#include "bsp_key.h"
+#endif
 
 #ifdef Exp_3
+#include "bsp_led.h"
+#include "bsp_usart.h"
+#include "retarget.h"
+
 static void Show_Message(void);
 #endif
 
+#ifdef Exp_4
+#include "bsp_debug_usart.h"
+#include "retarget.h"
+#endif
+
+#ifdef Exp_5
+#include "bsp_beep.h"
+#endif
+
+#ifdef Exp_6
+#include "bsp_led.h"
+#include "bsp_exti.h"
+#endif
+
+#ifdef Exp_7
+#include "bsp_led.h"
+#include "bsp_SysTick.h"
+#endif
+
 #ifdef Exp_8
-//该变量在定时器中断服务函数中使用，用于控制各通道的输出
-//修改该变量的值可直接改变呼吸灯的颜色
-//变量格式：RGB888
+#include "bsp_breath_led.h"
+#endif
+
+#ifdef Exp_9
+#include "bsp_led.h"
+#include "bsp_basic_tim.h"
+#endif
+
+#ifdef Exp_10
+#include "bsp_led.h"
+#include "bsp_advanced_tim.h"
+#endif
+
+// 该变量在定时器中断服务函数中使用，用于控制各通道的输出
+// 修改该变量的值可直接改变呼吸灯的颜色
+// 变量格式：RGB888
 __IO uint32_t rgb_color = 0xFF00FF;
+#ifdef Exp_8
+#include "stm32f4xx.h"
+#include "bsp_usart.h"
+#include "bsp_breath_led.h"
 
 #define SOFT_DELAY() Delay(0x3FFFFFF);
 #endif
+
+void Delay(__IO u32 nCount);
 
 int main(void) {
     /*实验一 点亮LED*/

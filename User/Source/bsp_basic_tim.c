@@ -25,7 +25,7 @@ static void TIMx_NVIC_Configuration(void) {
  * 另外三个成员是通用定时器和高级定时器才有.
  *-----------------------------------------------------------------------------
  * TIM_Prescaler         都有
- * TIM_CounterMode			 TIMx,x[6,7]没有，其他都有（基本定时器）
+ * TIM_CounterMode	     TIMx,x[6,7]没有，其他都有（基本定时器）
  * TIM_Period            都有
  * TIM_ClockDivision     TIMx,x[6,7]没有，其他都有(基本定时器)
  * TIM_RepetitionCounter TIMx,x[1,8]才有(高级定时器)
@@ -63,7 +63,7 @@ static void TIM_Mode_Config(void) {
     // 初始化定时器TIM6时基单元
     TIM_TimeBaseInit(BASIC_TIM, &TIM_TimeBaseStructure);
 
-    // 清除定时器TIM6更新中断标志位
+    // 清除定时器TIM6更新中断标志位，防止开启定时器后立刻产生中断
     TIM_ClearFlag(BASIC_TIM, TIM_FLAG_Update);
 
     // 开启定时器TIM6更新中断
@@ -74,7 +74,7 @@ static void TIM_Mode_Config(void) {
 }
 
 /**
-  * @brief  初始化基本定时器定时，1ms产生一次中断
+  * @brief  初始化基本定时器定时，1s产生一次中断
   * @param  none
   * @retval none
   */
