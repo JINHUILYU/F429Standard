@@ -32,6 +32,7 @@
 #include "bsp_led.h"
 #include "bsp_exti.h"
 #include "bsp_breath_led.h"
+#include "bsp_basic_tim.h"
 
 extern void TimingDelay_Decrement(void);
 
@@ -59,8 +60,7 @@ extern void TimingDelay_Decrement(void);
   * @param  None
   * @retval None
   */
-void NMI_Handler(void)
-{
+void NMI_Handler(void) {
 }
 
 /**
@@ -68,11 +68,9 @@ void NMI_Handler(void)
   * @param  None
   * @retval None
   */
-void HardFault_Handler(void)
-{
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {}
+void HardFault_Handler(void) {
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while (1) {}
 }
 
 /**
@@ -80,11 +78,9 @@ void HardFault_Handler(void)
   * @param  None
   * @retval None
   */
-void MemManage_Handler(void)
-{
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {}
+void MemManage_Handler(void) {
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while (1) {}
 }
 
 /**
@@ -92,11 +88,9 @@ void MemManage_Handler(void)
   * @param  None
   * @retval None
   */
-void BusFault_Handler(void)
-{
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {}
+void BusFault_Handler(void) {
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while (1) {}
 }
 
 /**
@@ -104,11 +98,9 @@ void BusFault_Handler(void)
   * @param  None
   * @retval None
   */
-void UsageFault_Handler(void)
-{
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {}
+void UsageFault_Handler(void) {
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while (1) {}
 }
 
 /**
@@ -116,32 +108,28 @@ void UsageFault_Handler(void)
   * @param  None
   * @retval None
   */
-void DebugMon_Handler(void)
-{}
+void DebugMon_Handler(void) {}
 
 /**
   * @brief  This function handles SVCall exception.
   * @param  None
   * @retval None
   */
-void SVC_Handler(void)
-{}
+void SVC_Handler(void) {}
 
 /**
   * @brief  This function handles PendSV_Handler exception.
   * @param  None
   * @retval None
   */
-void PendSV_Handler(void)
-{}
+void PendSV_Handler(void) {}
 
 /**
   * @brief  This function handles SysTick Handler.
   * @param  None
   * @retval None
   */
-void SysTick_Handler(void)
-{
+void SysTick_Handler(void) {
     TimingDelay_Decrement();
 }
 
@@ -164,27 +152,24 @@ void SysTick_Handler(void)
  * @param  none
  * @retval none
  */
-void KEY1_IRQHandler(void)
-{
+void KEY1_IRQHandler(void) {
     //确保是否产生了EXTI Line中断
-    if(EXTI_GetITStatus(KEY1_INT_EXTI_LINE) != RESET)
-    {
+    if (EXTI_GetITStatus(KEY1_INT_EXTI_LINE) != RESET) {
         // LED1 取反
         LED1_TOGGLE;
         //清除中断标志位
         EXTI_ClearITPendingBit(KEY1_INT_EXTI_LINE);
     }
 }
+
 /*
  * @brief  外部中断15_10服务函数，对应按键KEY2，当KEY2按下时，LED2翻转(GREEN)
  * @param  none
  * @retval none
  */
-void KEY2_IRQHandler(void)
-{
+void KEY2_IRQHandler(void) {
     //确保是否产生了EXTI Line中断
-    if(EXTI_GetITStatus(KEY2_INT_EXTI_LINE) != RESET)
-    {
+    if (EXTI_GetITStatus(KEY2_INT_EXTI_LINE) != RESET) {
         // LED2 取反
         LED2_TOGGLE;
         //清除中断标志位
@@ -197,71 +182,77 @@ void KEY2_IRQHandler(void)
   * @param  None
   * @retval None
   */
-extern uint16_t indexWave[];
+//extern uint16_t indexWave[];
+//
+//extern __IO uint32_t rgb_color;
+//
+//void  BRE_TIM_IRQHandler(void) {
+//    static uint16_t pwm_index = 0;            //用于PWM查表
+//    static uint16_t period_cnt = 0;        //用于计算周期数
+//    static uint16_t amplitude_cnt = 0;    //用于计算幅值等级
+//
+//    if (TIM_GetITStatus(BRE_TIM, TIM_IT_Update) != RESET)    //TIM_IT_Update
+//    {
+//        amplitude_cnt++;
+//
+//        //每个PWM表中的每个元素有AMPLITUDE_CLASS个等级，
+//        //每增加一级多输出一次脉冲，即PWM表中的元素多使用一次
+//        //使用256次，根据RGB颜色分量设置通道输出
+//        if (amplitude_cnt > (AMPLITUDE_CLASS - 1)) {
+//            period_cnt++;
+//
+//            //每个PWM表中的每个元素使用period_class次
+//            if (period_cnt > period_class) {
+//
+//                pwm_index++;                                                //标志PWM表指向下一个元素
+//
+//                //若PWM表已到达结尾，重新指向表头
+//                if (pwm_index >= POINT_NUM) {
+//                    pwm_index = 0;
+//                }
+//
+//                period_cnt = 0;                                            //重置周期计数标志
+//            }
+//
+//            amplitude_cnt = 0;                                            //重置幅值计数标志
+//        } else {
+//            //每个PWM表中的每个元素有AMPLITUDE_CLASS个等级，
+//            //每增加一级多输出一次脉冲，即PWM表中的元素多使用一次
+//
+//            //根据RGB颜色分量值，设置各个通道是否输出当前的PWM表元素表示的亮度
+//            //红
+//            if (((rgb_color & 0xFF0000) >> 16) >= amplitude_cnt)
+//                BRE_TIM->BRE_RED_CCRx = indexWave[pwm_index];    //根据PWM表修改定时器的比较寄存器值
+//            else
+//                BRE_TIM->BRE_RED_CCRx = 0;        //比较寄存器值为0，通道输出高电平，该通道LED灯灭
+//
+//            //绿
+//            if (((rgb_color & 0x00FF00) >> 8) >= amplitude_cnt)
+//                BRE_TIM->BRE_GREEN_CCRx = indexWave[pwm_index];    //根据PWM表修改定时器的比较寄存器值
+//            else
+//                BRE_TIM->BRE_GREEN_CCRx = 0;    //比较寄存器值为0，通道输出高电平，该通道LED灯灭
+//
+//            //蓝
+//            if ((rgb_color & 0x0000FF) >= amplitude_cnt)
+//                BRE_TIM->BRE_BLUE_CCRx = indexWave[pwm_index];    //根据PWM表修改定时器的比较寄存器值
+//            else
+//                BRE_TIM->BRE_BLUE_CCRx = 0;        //比较寄存器值为0，通道输出高电平，该通道LED灯灭
+//
+//        }
+//
+//        TIM_ClearITPendingBit(BRE_TIM, TIM_IT_Update);    //必须要清除中断标志位
+//    }
+//}
 
-extern __IO uint32_t rgb_color;
-
-void  BRE_TIM_IRQHandler (void)
-{
-    static uint16_t pwm_index = 0;			//用于PWM查表
-    static uint16_t period_cnt = 0;		//用于计算周期数
-    static uint16_t amplitude_cnt = 0;	//用于计算幅值等级
-
-    if (TIM_GetITStatus(BRE_TIM, TIM_IT_Update) != RESET)	//TIM_IT_Update
-    {
-        amplitude_cnt++;
-
-        //每个PWM表中的每个元素有AMPLITUDE_CLASS个等级，
-        //每增加一级多输出一次脉冲，即PWM表中的元素多使用一次
-        //使用256次，根据RGB颜色分量设置通道输出
-        if(amplitude_cnt > (AMPLITUDE_CLASS-1))
-        {
-            period_cnt++;
-
-            //每个PWM表中的每个元素使用period_class次
-            if(period_cnt > period_class)
-            {
-
-                pwm_index++;												//标志PWM表指向下一个元素
-
-                //若PWM表已到达结尾，重新指向表头
-                if( pwm_index >=  POINT_NUM)
-                {
-                    pwm_index=0;
-                }
-
-                period_cnt = 0;											//重置周期计数标志
-            }
-
-            amplitude_cnt=0;											//重置幅值计数标志
-        }
-        else
-        {
-            //每个PWM表中的每个元素有AMPLITUDE_CLASS个等级，
-            //每增加一级多输出一次脉冲，即PWM表中的元素多使用一次
-
-            //根据RGB颜色分量值，设置各个通道是否输出当前的PWM表元素表示的亮度
-            //红
-            if(((rgb_color&0xFF0000)>>16) >= amplitude_cnt)
-                BRE_TIM->BRE_RED_CCRx = indexWave[pwm_index];	//根据PWM表修改定时器的比较寄存器值
-            else
-                BRE_TIM->BRE_RED_CCRx = 0;		//比较寄存器值为0，通道输出高电平，该通道LED灯灭
-
-            //绿
-            if(((rgb_color&0x00FF00)>>8) >= amplitude_cnt)
-                BRE_TIM->BRE_GREEN_CCRx = indexWave[pwm_index];	//根据PWM表修改定时器的比较寄存器值
-            else
-                BRE_TIM->BRE_GREEN_CCRx = 0;	//比较寄存器值为0，通道输出高电平，该通道LED灯灭
-
-            //蓝
-            if((rgb_color&0x0000FF) >= amplitude_cnt)
-                BRE_TIM->BRE_BLUE_CCRx = indexWave[pwm_index];	//根据PWM表修改定时器的比较寄存器值
-            else
-                BRE_TIM->BRE_BLUE_CCRx = 0;		//比较寄存器值为0，通道输出高电平，该通道LED灯灭
-
-        }
-
-        TIM_ClearITPendingBit (BRE_TIM, TIM_IT_Update);	//必须要清除中断标志位
+/**
+ * @brief  This function handles TIM interrupt request.
+ * @param  None
+ * @retval None
+ */
+void BASIC_TIM_IRQHandler(void) {
+    if (TIM_GetITStatus(BASIC_TIM, TIM_IT_Update) != RESET) {
+        LED1_TOGGLE; // LED1翻转
+        TIM_ClearITPendingBit(BASIC_TIM, TIM_IT_Update); // 清除中断标志位
     }
 }
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

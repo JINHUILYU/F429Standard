@@ -8,6 +8,7 @@
 #include "bsp_beep.h"
 #include "bsp_exti.h"
 #include "bsp_breath_led.h"
+#include "bsp_basic_tim.h"
 
 //#define Exp_1 // 实验一 点亮LED
 //#define Exp_2 // 实验二 按键检测
@@ -16,7 +17,8 @@
 //#define Exp_5 // 实验五 蜂鸣器
 //#define Exp_6 // 实验六 外部中断
 //#define Exp_7 // 实验七 SysTick定时器
-#define Exp_8 // 实验八 PWM呼吸灯
+//#define Exp_8 // 实验八 PWM呼吸灯
+#define Exp_9 // 实验九 基本定时器
 
 void Delay(__IO u32 nCount);
 
@@ -196,11 +198,20 @@ int main(void) {
         SOFT_DELAY();
     }
 #endif
+
+    /*实验九 基本定时器(TIM6)*/
+#ifdef Exp_9
+    LED_GPIO_Config(); // LED端口初始化
+    /* 初始化基本定时器定时，1s产生一次中断 */
+    TIMx_Configuration();
+    while(1) {}
+#endif
 }
 
 /**
  * @brief Delay function
  * @param nCount
+ * @retval none
  */
 void Delay(__IO uint32_t nCount) {
     for (; nCount != 0; nCount--);

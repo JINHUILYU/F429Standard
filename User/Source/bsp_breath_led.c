@@ -26,24 +26,23 @@ uint16_t indexWave[] = {
 };
 
 //计算PWM表有多少个元素
-uint16_t POINT_NUM = sizeof(indexWave)/sizeof(indexWave[0]);
+uint16_t POINT_NUM = sizeof(indexWave) / sizeof(indexWave[0]);
 
 /**
  * @brief  配置TIM复用输出PWM时用到的I/O
  * @param  无
  * @retval 无
  */
-static void TIMx_GPIO_Config(void)
-{
+static void TIMx_GPIO_Config(void) {
     /*定义一个GPIO_InitTypeDef类型的结构体*/
     GPIO_InitTypeDef GPIO_InitStructure;
 
     /*开启LED相关的GPIO外设时钟*/
-    RCC_AHB1PeriphClockCmd ( BRE_TIM_GPIO_CLK, ENABLE);
+    RCC_AHB1PeriphClockCmd(BRE_TIM_GPIO_CLK, ENABLE);
 
-    GPIO_PinAFConfig(BRE_RED_GPIO_PORT,BRE_RED_PINSOURCE,BRE_RED_AF);
-    GPIO_PinAFConfig(BRE_GREEN_GPIO_PORT,BRE_GREEN_PINSOURCE,BRE_GREEN_AF);
-    GPIO_PinAFConfig(BRE_BLUE_GPIO_PORT,BRE_BLUE_PINSOURCE,BRE_BLUE_AF);
+    GPIO_PinAFConfig(BRE_RED_GPIO_PORT, BRE_RED_PINSOURCE, BRE_RED_AF);
+    GPIO_PinAFConfig(BRE_GREEN_GPIO_PORT, BRE_GREEN_PINSOURCE, BRE_GREEN_AF);
+    GPIO_PinAFConfig(BRE_BLUE_GPIO_PORT, BRE_BLUE_PINSOURCE, BRE_BLUE_AF);
 
     /* 配置LED灯用到的引脚 */
     //红
@@ -69,8 +68,7 @@ static void TIMx_GPIO_Config(void)
  * @param  无
  * @retval 无
  */
-static void TIMx_NVIC_Configuration(void)
-{
+static void TIMx_NVIC_Configuration(void) {
     NVIC_InitTypeDef NVIC_InitStructure;
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
 
@@ -87,17 +85,15 @@ static void TIMx_NVIC_Configuration(void)
 }
 
 
-
 /**
   * @brief  配置TIM输出的PWM信号的模式，如周期、极性
   * @param  无
   * @retval 无
   */
 
-static void TIM_Mode_Config(void)
-{
-    TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-    TIM_OCInitTypeDef  TIM_OCInitStructure;
+static void TIM_Mode_Config(void) {
+    TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+    TIM_OCInitTypeDef TIM_OCInitStructure;
 
     // 开启TIMx_CLK,x[2,3,4,5]
     BRE_TIM_APBxClock_FUN(BRE_TIM_CLK, ENABLE);
@@ -157,9 +153,9 @@ static void TIM_Mode_Config(void)
     呼吸周期：3.145728
     ************************************************************/
 
-    TIM_TimeBaseStructure.TIM_Period = (512-1);      					//当定时器从0计数到 TIM_Period+1 ，为一个定时周期
-    TIM_TimeBaseStructure.TIM_Prescaler = (12-1);	    			//设置预分频
-    TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1 ;	//设置时钟分频系数：不分频(这里用不到)
+    TIM_TimeBaseStructure.TIM_Period = (512 - 1);                        //当定时器从0计数到 TIM_Period+1 ，为一个定时周期
+    TIM_TimeBaseStructure.TIM_Prescaler = (12 - 1);                    //设置预分频
+    TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;    //设置时钟分频系数：不分频(这里用不到)
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  //向上计数模式
 
     // 初始化定时器TIMx, x[2,3,4,5]
@@ -168,9 +164,9 @@ static void TIM_Mode_Config(void)
 
     /*PWM模式配置*/
     /* PWM1 Mode configuration: Channel1 */
-    TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;	    //配置为PWM模式1
-    TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;	//使能输出
-    TIM_OCInitStructure.TIM_Pulse = 0;	  												//设置初始PWM脉冲宽度为0
+    TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;        //配置为PWM模式1
+    TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;    //使能输出
+    TIM_OCInitStructure.TIM_Pulse = 0;                                                    //设置初始PWM脉冲宽度为0
     TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;  //当定时器计数值小于CCR1_Val时为低电平 LED灯亮
 
     //使能通道
@@ -190,10 +186,10 @@ static void TIM_Mode_Config(void)
     BRE_BLUE_TIM_OCxPreloadConfig(BRE_TIM, TIM_OCPreload_Enable);
 
 
-    TIM_ARRPreloadConfig(BRE_TIM, ENABLE);			//使能TIM重载寄存器ARR
+    TIM_ARRPreloadConfig(BRE_TIM, ENABLE);            //使能TIM重载寄存器ARR
 
     // 开启计数器中断
-    TIM_ITConfig(BRE_TIM,TIM_IT_Update,ENABLE);
+    TIM_ITConfig(BRE_TIM, TIM_IT_Update, ENABLE);
 
     // 使能计数器
     TIM_Cmd(BRE_TIM, ENABLE);
@@ -204,8 +200,7 @@ static void TIM_Mode_Config(void)
   * @param  无
   * @retval 无
   */
-void BreathLED_Config(void)
-{
+void BreathLED_Config(void) {
 
     TIMx_GPIO_Config();
 
