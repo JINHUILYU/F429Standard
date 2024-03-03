@@ -6,9 +6,9 @@
 //#define Exp_6 // 实验六 外部中断
 //#define Exp_7 // 实验七 SysTick定时器
 //#define Exp_8 // 实验八 PWM呼吸灯
-#define Exp_9 // 实验九 PWM呼吸灯(江科大)
-//#define Exp_9 // 实验九 基本定时器
-//#define Exp_10 // 实验十 高级定时器
+//#define Exp_9 // 实验九 PWM呼吸灯(江科大)
+#define Exp_10 // 实验十 基本定时器
+//#define Exp_11 // 实验十一 高级定时器
 
 #ifdef Exp_1
 #include "bsp_led.h"
@@ -244,11 +244,11 @@ int main(void) {
 
     while (1) {
         for (int i = 0; i <= 100; i++) {
-            TIM_SetCompare1(TIM5, i);
+            PWM_SetCompare1(i);
             Delay(0x3FFFF);
         }
         for (int i = 100; i >= 0; i--) {
-            TIM_SetCompare1(TIM5, i);
+            PWM_SetCompare1(i);
             Delay(0x3FFFF);
         }
     }
