@@ -161,7 +161,6 @@ static void TIM_Mode_Config(void) {
     // 初始化定时器TIMx, x[2,3,4,5]
     TIM_TimeBaseInit(BRE_TIM, &TIM_TimeBaseStructure);
 
-
     /* PWM模式配置 */
     /* PWM1 Mode configuration: Channel1 */
     TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1; // 配置为PWM模式1
@@ -179,12 +178,10 @@ static void TIM_Mode_Config(void) {
     /* 使能通道重载 */
     BRE_GREEN_TIM_OCxPreloadConfig(BRE_TIM, TIM_OCPreload_Enable);
 
-
     // 使能通道
     BRE_BLUE_TIM_OCxInit(BRE_TIM, &TIM_OCInitStructure);
     /* 使能通道重载 */
     BRE_BLUE_TIM_OCxPreloadConfig(BRE_TIM, TIM_OCPreload_Enable);
-
 
     TIM_ARRPreloadConfig(BRE_TIM, ENABLE); // 使能TIM重载寄存器ARR
 

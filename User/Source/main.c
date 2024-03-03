@@ -5,7 +5,8 @@
 //#define Exp_5 // 实验五 蜂鸣器
 //#define Exp_6 // 实验六 外部中断
 //#define Exp_7 // 实验七 SysTick定时器
-#define Exp_8 // 实验八 PWM呼吸灯
+//#define Exp_8 // 实验八 PWM呼吸灯
+#define Exp_9 // 实验九 PWM呼吸灯(江科大)
 //#define Exp_9 // 实验九 基本定时器
 //#define Exp_10 // 实验十 高级定时器
 
@@ -47,14 +48,21 @@ static void Show_Message(void);
 
 #ifdef Exp_8
 #include "bsp_breath_led.h"
+
+#define SOFT_DELAY() Delay(0x3FFFFFF);
 #endif
 
 #ifdef Exp_9
+#include "bsp_SysTick.h"
+#include "PWM.h"
+#endif
+
+#ifdef Exp_10
 #include "bsp_led.h"
 #include "bsp_basic_tim.h"
 #endif
 
-#ifdef Exp_10
+#ifdef Exp_11
 #include "bsp_led.h"
 #include "bsp_advanced_tim.h"
 #endif
@@ -63,13 +71,6 @@ static void Show_Message(void);
 // 修改该变量的值可直接改变呼吸灯的颜色
 // 变量格式：RGB888
 __IO uint32_t rgb_color = 0xFF00FF;
-#ifdef Exp_8
-#include "stm32f4xx.h"
-#include "bsp_usart.h"
-#include "bsp_breath_led.h"
-
-#define SOFT_DELAY() Delay(0x3FFFFFF);
-#endif
 
 void Delay(__IO u32 nCount);
 
@@ -237,8 +238,24 @@ int main(void) {
     }
 #endif
 
-    /*实验九 基本定时器(TIM6)*/
+    /*实验九 PWM呼吸灯(江科大)*/
 #ifdef Exp_9
+    PWM_Init();
+
+    while (1) {
+        for (int i = 0; i <= 100; i++) {
+            TIM_SetCompare1(TIM5, i);
+            Delay(0x3FFFF);
+        }
+        for (int i = 100; i >= 0; i--) {
+            TIM_SetCompare1(TIM5, i);
+            Delay(0x3FFFF);
+        }
+    }
+#endif
+
+    /*实验十 基本定时器(TIM6)*/
+#ifdef Exp_10
     LED_GPIO_Config(); // LED端口初始化
     /* 初始化基本定时器定时，1s产生一次中断 */
     TIMx_Configuration();
