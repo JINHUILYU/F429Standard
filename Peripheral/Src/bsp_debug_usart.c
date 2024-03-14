@@ -1,21 +1,4 @@
-/**
-  ******************************************************************************
-  * @file    bsp_debug_usart.c
-  * @author  fire
-  * @version V1.0
-  * @date    2015-xx-xx
-  * @brief   重定向c库printf函数到usart端口，中断接收模式
-  ******************************************************************************
-  * @attention
-  *
-  * 实验平台:野火  STM32 F429 开发板
-  * 论坛    :http://www.firebbs.cn
-  * 淘宝    :https://fire-stm32.taobao.com
-  *
-  ******************************************************************************
-  */
-
-#include "../../Peripheral/Inc/bsp_debug_usart.h"
+#include "bsp_debug_usart.h"
 
 
  /**

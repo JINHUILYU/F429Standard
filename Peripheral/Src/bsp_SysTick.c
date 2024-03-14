@@ -1,4 +1,4 @@
-#include "../../Peripheral/Inc/bsp_SysTick.h"
+#include "bsp_SysTick.h"
 
 static __IO u32 TimingDelay;
  
