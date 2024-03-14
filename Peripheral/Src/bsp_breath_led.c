@@ -1,4 +1,4 @@
-#include "bsp_breath_led.h"
+#include "../../Peripheral/Inc/bsp_breath_led.h"
 
 // 控制输出波形的频率
 __IO uint16_t period_class = 1;

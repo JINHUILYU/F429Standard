@@ -49,11 +49,17 @@ else ()
     add_compile_options(-Og -g)
 endif ()
 
-include_directories(Libraries/CMSIS/Device/ST/STM32F4xx/Include Libraries/CMSIS/Include Libraries/STM32F4xx_StdPeriph_Driver/inc User/Include)
+include_directories(
+        Libraries/CMSIS/Device/ST/STM32F4xx/Include
+        Libraries/CMSIS/Include
+        Libraries/STM32F4xx_StdPeriph_Driver/inc
+        Peripheral/Inc
+        User/Include
+)
 
 add_definitions(-DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F429_439xx)
 
-file(GLOB_RECURSE SOURCES "Libraries/*.*" "User/*.*" "Startup/*.*")
+file(GLOB_RECURSE SOURCES "Libraries/*.*" "User/*.*" "Startup/*.*" "Peripheral/*.*")
 
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F429IGTX_FLASH.ld)
 

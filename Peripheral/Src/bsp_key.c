@@ -15,7 +15,7 @@
   ******************************************************************************
   */
 
-#include "bsp_key.h"
+#include "../../Peripheral/Inc/bsp_key.h"
 
 // 不精确的延时
 void Key_Delay(__IO u32 nCount) {

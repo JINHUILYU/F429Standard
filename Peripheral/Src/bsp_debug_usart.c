@@ -15,7 +15,7 @@
   ******************************************************************************
   */
 
-#include "bsp_debug_usart.h"
+#include "../../Peripheral/Inc/bsp_debug_usart.h"
 
 
  /**
