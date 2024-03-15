@@ -49,7 +49,7 @@ void Debug_USART_Config(void)
 
   /* 配置Tx引脚为复用功能  */
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Pin = DEBUG_USART_TX_PIN  ;
+  GPIO_InitStructure.GPIO_Pin = DEBUG_USART_TX_PIN;
   GPIO_Init(DEBUG_USART_TX_GPIO_PORT, &GPIO_InitStructure);
 
   /* 配置Rx引脚为复用功能 */

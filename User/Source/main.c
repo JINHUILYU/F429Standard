@@ -7,8 +7,9 @@
 //#define Exp_7 // 实验七 SysTick定时器
 //#define Exp_8 // 实验八 PWM呼吸灯
 //#define Exp_9 // 实验九 PWM呼吸灯(江科大)
-#define Exp_10 // 实验十 基本定时器
+//#define Exp_10 // 实验十 基本定时器
 //#define Exp_11 // 实验十一 高级定时器
+#define Exp_12 // 实验十二 红外遥控接收
 
 #ifdef Exp_1
 #include "bsp_led.h"
@@ -65,6 +66,22 @@ static void Show_Message(void);
 #ifdef Exp_11
 #include "bsp_led.h"
 #include "bsp_advanced_tim.h"
+#endif
+
+#ifdef Exp_12
+
+#include "bsp_led.h"
+#include "bsp_irda.h"
+#include "bsp_debug_usart.h"
+#include "bsp_SysTick.h"
+#include "retarget.h"
+
+#define CLI() __set_PRIMASK(1)        /* 关闭总中断 */
+#define SEI() __set_PRIMASK(0)        /* 开放总中断 */
+
+extern uint8_t frame_flag;
+extern uint8_t isr_cnt;
+extern uint8_t frame_cnt;
 #endif
 
 // 该变量在定时器中断服务函数中使用，用于控制各通道的输出
@@ -260,6 +277,178 @@ int main(void) {
     /* 初始化基本定时器定时，1s产生一次中断 */
     TIMx_Configuration();
     while(1) {}
+#endif
+
+    /*实验十一 高级定时器(TIM2)*/
+#ifdef Exp_11
+#endif
+
+    /*实验十二 红外遥控接收*/
+#ifdef Exp_12
+    uint8_t key_val;
+
+    /* config the led */
+    LED_GPIO_Config();
+    LED1_ON;
+
+    /* 配置SysTick 为10us中断一次 */
+    SysTick_Init();
+
+    /* 重新配置SysTick的中断优先级为最高，要不然SysTick延时中断抢占不了IO EXTI中断
+     * 因为SysTick初始化时默认配置的优先级是最低的
+     * 或者当你用其他定时器做延时的时候，要配置定时器的优先级高于IO EXTI中断的优先级
+     */
+    NVIC_SetPriority(SysTick_IRQn, 0);
+
+
+    /* USART config 115200 8-N-1 */
+    Debug_USART_Config();
+    RetargetInit(DEBUG_USART); // 串口重定向
+    printf("\r\n 这是一个红外遥控发射与接收实验 \r\n");
+
+    /* 初始化红外接收头CP1838用到的IO */
+    IrDa_Init();
+
+    while (1) {
+        if (frame_flag == 1) /* 一帧红外数据接收完成 */
+        {
+            key_val = IrDa_Process();
+            printf("\r\n key_val=%d \r\n", key_val);
+            printf("\r\n 按键次数frame_cnt=%d \r\n", frame_cnt);
+            printf("\r\n 中断次数isr_cnt=%d \r\n", isr_cnt);
+
+            /* 不同的遥控器面板对应不同的键值，需要实际测量 */
+            switch (key_val) {
+                case 0: LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n Error \r\n");
+                    break;
+
+                case 162: // POWER
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n POWER \r\n");
+                    break;
+
+                case 226: // MENU
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n MENU \r\n");
+                    break;
+
+                case 34: // TEST
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n TEST \r\n");
+                    break;
+
+                case 2: // +
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n + \r\n");
+                    break;
+
+                case 194: // RETURN
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n RETURN \r\n");
+                    break;
+
+                case 224: // |<<
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n |<< \r\n");
+                    break;
+
+                case 168: // >
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n > \r\n");
+                    break;
+
+                case 144: // >>|
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n >>| \r\n");
+                    break;
+
+                case 104: // 0
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n 0 \r\n");
+                    break;
+
+                case 152: // -
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n - \r\n");
+                    break;
+
+                case 176: // C
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n C \r\n");
+                    break;
+
+                case 48: // 1
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n 1 \r\n");
+                    break;
+
+                case 24: // 2
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n 2 \r\n");
+                    break;
+
+                case 122: // 3
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n 3 \r\n");
+                    break;
+
+                case 16: // 4
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n 4 \r\n");
+                    break;
+
+                case 56: // 5
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n 5 \r\n");
+                    break;
+
+                case 90: // 6
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n 6 \r\n");
+                    break;
+
+                case 66: // 7
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n 7 \r\n");
+                    break;
+
+                case 74: // 8
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n 8 \r\n");
+                    break;
+
+                case 82: // 9
+                LED1_TOGGLE;
+                    printf("\r\n key_val=%d \r\n", key_val);
+                    printf("\r\n 9 \r\n");
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
 #endif
 }
 
